@@ -57,12 +57,9 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
     /**
      * {@inheritDoc}
      */
-    // TODO à tester
     @Override
     public synchronized void addReference(EcritureComptable pEcritureComptable) throws FunctionalException {
-        // TODO à implémenter
-        //getDaoProxy().getComptabiliteDao().isJournalInDatabase(pEcritureComptable.getJournal())
-        int derniereValeur = 0;
+        int derniereValeur;
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(pEcritureComptable.getDate());
         if(getDaoProxy().getComptabiliteDao().isJournalInDatabase(pEcritureComptable.getJournal())) {
@@ -83,18 +80,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
         } else {
             throw new FunctionalException("Le code du journal n'est pas enregistré en base de données");
         }
-        // Bien se réferer à la JavaDoc de cette méthode !
-        /* Le principe :
-                1.  Remonter depuis la persitance la dernière valeur de la séquence du journal pour l'année de l'écriture
-                    (table sequence_ecriture_comptable)
-                2.  * S'il n'y a aucun enregistrement pour le journal pour l'année concernée :
-                        1. Utiliser le numéro 1.
-                    * Sinon :
-                        1. Utiliser la dernière valeur + 1
-                3.  Mettre à jour la référence de l'écriture avec la référence calculée (RG_Compta_5)
-                4.  Enregistrer (insert/update) la valeur de la séquence en persitance
-                    (table sequence_ecriture_comptable)
-         */
     }
 
     /**
@@ -115,7 +100,6 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
      * @param pEcritureComptable -
      * @throws FunctionalException Si l'Ecriture comptable ne respecte pas les règles de gestion
      */
-    // TODO tests à compléter
     protected void checkEcritureComptableUnit(EcritureComptable pEcritureComptable) throws FunctionalException {
         // ===== Vérification des contraintes unitaires sur les attributs de l'écriture
         Set<ConstraintViolation<EcritureComptable>> vViolations = getConstraintValidator().validate(pEcritureComptable);
@@ -144,7 +128,7 @@ public class ComptabiliteManagerImpl extends AbstractBusinessManager implements 
                 vNbrDebit++;
             }
         }
-        // On test le nombre de lignes car si l'écriture a une seule ligne
+        // On teste le nombre de lignes car si l'écriture a une seule ligne
         //      avec un montant au débit et un montant au crédit ce n'est pas valable
         if (pEcritureComptable.getListLigneEcriture().size() < 2
             || vNbrCredit < 1
