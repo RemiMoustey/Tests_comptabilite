@@ -6,3 +6,7 @@ rvm:
 env:
   global:
     - COVERALLS_REPO_TOKEN=dGAtf9UcrObtq5I4Wt40g4v73cQSl1AOR
+
+
+script:
+  - mvn clean test jacoco:report coveralls:report
