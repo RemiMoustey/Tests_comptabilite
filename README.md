@@ -1,0 +1,1 @@
+[![Coverage Status](https://coveralls.io/repos/github/RemiMoustey/Tests_comptabilite/badge.svg?branch=master)](https://coveralls.io/github/RemiMoustey/Tests_comptabilite?branch=master)
