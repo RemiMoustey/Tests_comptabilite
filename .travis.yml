@@ -7,6 +7,4 @@ env:
   global:
     - COVERALLS_REPO_TOKEN=dGAtf9UcrObtq5I4Wt40g4v73cQSl1AOR
 
-script: gradle/wrapper check --info --stacktrace
-
-after_success: gradle/wrapper javadoc site jacocoTestReport coveralls
+script: mvn -DTRAVIS_JOB_ID=$TRAVIS_JOB_ID clean test jacoco:report coveralls:report
