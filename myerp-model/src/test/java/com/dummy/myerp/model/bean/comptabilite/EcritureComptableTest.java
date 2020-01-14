@@ -2,9 +2,7 @@ package com.dummy.myerp.model.bean.comptabilite;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.regex.Pattern;
 
-import com.dummy.myerp.technical.exception.FunctionalException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -51,7 +49,7 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void isEquilibree() throws Exception {
+    public void isEquilibreeRG2() throws Exception {
         EcritureComptable vEcriture = new EcritureComptable();
 
         vEcriture.setLibelle("Equilibrée");
@@ -60,6 +58,11 @@ public class EcritureComptableTest {
         vEcriture.getListLigneEcriture().add(this.createLigne(2, null, "301"));
         vEcriture.getListLigneEcriture().add(this.createLigne(2, "301", null));
         Assert.assertTrue(vEcriture.toString(), vEcriture.isEquilibree());
+    }
+
+    @Test
+    public void isNotEquilibreeRG2() throws Exception {
+        EcritureComptable vEcriture = new EcritureComptable();
 
         vEcriture.getListLigneEcriture().clear();
         vEcriture.setLibelle("Non équilibrée");
@@ -71,7 +74,7 @@ public class EcritureComptableTest {
     }
 
     @Test
-    public void areMontantsSignes() throws Exception {
+    public void areMontantsSignesRG4() throws Exception {
         EcritureComptable vEcriture = new EcritureComptable();
 
         vEcriture.getListLigneEcriture().add(this.createLigne(1, null, "-130"));
@@ -80,14 +83,12 @@ public class EcritureComptableTest {
         Assert.assertEquals(new BigDecimal(-130).setScale(2, RoundingMode.CEILING), vEcriture.getTotalDebit());
     }
 
-//    @Test
-//    public void checkNumbersAfterComma() throws Exception {
-//        EcritureComptable vEcriture = new EcritureComptable();
-//        try {
-//            vEcriture.getListLigneEcriture().add(this.createLigne(1, null, "130.245"));
-//            vEcriture.getListLigneEcriture().add(this.createLigne(1, "130.245", null));
-//        } catch (FunctionalException e) {
-//            assert(e.getMessage().contains("Le montant du crédit ne peut comporter que deux chiffres maximum après la virgule"));
-//        }
-//    }
+    @Test
+    public void checkNumbersAfterCommaRG7() throws Exception {
+        EcritureComptable vEcriture = new EcritureComptable();
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, null, "130.245"));
+        vEcriture.getListLigneEcriture().add(this.createLigne(1, "130.245", null));
+        Assert.assertEquals(new BigDecimal(130.25), vEcriture.getListLigneEcriture().get(0).getCredit());
+        Assert.assertEquals(new BigDecimal(130.25), vEcriture.getListLigneEcriture().get(1).getDebit());
+    }
 }

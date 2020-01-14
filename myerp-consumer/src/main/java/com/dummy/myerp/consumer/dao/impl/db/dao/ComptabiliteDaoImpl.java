@@ -274,7 +274,7 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
     public boolean isJournalInDatabase(JournalComptable journalComptable) {
         List<JournalComptable> journauxComptables = this.getListJournalComptable();
         for (JournalComptable journal : journauxComptables) {
-            if (journal.getCode() == journalComptable.getCode()) {
+            if (journal.getCode().equals(journalComptable.getCode())) {
                 return true;
             }
         }

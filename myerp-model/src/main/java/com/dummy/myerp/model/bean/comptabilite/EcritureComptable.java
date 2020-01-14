@@ -85,7 +85,7 @@ public class EcritureComptable {
         BigDecimal vRetour = BigDecimal.ZERO;
         for (LigneEcritureComptable vLigneEcritureComptable : listLigneEcriture) {
             if (vLigneEcritureComptable.getDebit() != null) {
-                vRetour = vRetour.add(vLigneEcritureComptable.getDebit().setScale(2, RoundingMode.CEILING));
+                vRetour = vRetour.add(vLigneEcritureComptable.getDebit());
             }
         }
         return vRetour;
@@ -100,7 +100,7 @@ public class EcritureComptable {
         BigDecimal vRetour = BigDecimal.ZERO;
         for (LigneEcritureComptable vLigneEcritureComptable : listLigneEcriture) {
             if (vLigneEcritureComptable.getCredit() != null) {
-                vRetour = vRetour.add(vLigneEcritureComptable.getCredit().setScale(2, RoundingMode.CEILING));
+                vRetour = vRetour.add(vLigneEcritureComptable.getCredit());
             }
         }
         return vRetour;

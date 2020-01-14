@@ -1,6 +1,7 @@
 package com.dummy.myerp.model.bean.comptabilite;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -47,34 +48,15 @@ public class LigneEcritureComptable {
      * @param pCredit the credit
      */
     public LigneEcritureComptable(CompteComptable pCompteComptable, String pLibelle,
-                                  BigDecimal pDebit, BigDecimal pCredit) throws FunctionalException {
+                                  BigDecimal pDebit, BigDecimal pCredit) {
         compteComptable = pCompteComptable;
         libelle = pLibelle;
-        debit = pDebit;
-//        if (pDebit != null) {
-//            String splitCommaDebit = String.valueOf(pDebit);
-//            if (splitCommaDebit.contains(".")) {
-//                String partsNumberDebit = splitCommaDebit.substring(splitCommaDebit.indexOf("."));
-//                if (partsNumberDebit.length() <= 3) {
-//                    debit = pDebit;
-//                } else {
-//                    throw new FunctionalException("Le montant du débit ne peut comporter que deux chiffres maximum après la virgule");
-//                }
-//            }
-//        }
-
-//        if (pCredit != null) {
-//            String splitCommaCredit = String.valueOf(pCredit);
-//            if (splitCommaCredit.contains(".")) {
-//                String partsNumberCredit = splitCommaCredit.substring(splitCommaCredit.indexOf("."));
-//                if (partsNumberCredit.length() <= 3) {
-//                    credit = pCredit;
-//                } else {
-//                    throw new FunctionalException("Le montant du crédit ne peut comporter que deux chiffres maximum après la virgule");
-//                }
-//            }
-//        }
-        credit = pCredit;
+        if (pDebit != null) {
+            debit = pDebit.setScale(2, RoundingMode.CEILING);
+        }
+        if (pCredit != null) {
+            credit = pCredit.setScale(2, RoundingMode.CEILING);
+        }
     }
 
 
