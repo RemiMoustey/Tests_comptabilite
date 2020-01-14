@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.regex.Pattern;
 
+import com.dummy.myerp.technical.exception.FunctionalException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -69,25 +70,6 @@ public class EcritureComptableTest {
         Assert.assertFalse(vEcriture.toString(), vEcriture.isEquilibree());
     }
 
-//    @Test
-//    public void isACorrectEcritureComptable() throws Exception {
-//        EcritureComptable vEcriture = new EcritureComptable();
-//
-//        vEcriture.getListLigneEcriture().add(this.createLigne(1, null, "130"));
-//        vEcriture.getListLigneEcriture().add(this.createLigne(1, "130", null));
-//        Assert.assertTrue(vEcriture.toString(), vEcriture.isACorrectEcritureComptable());
-//        vEcriture.getListLigneEcriture().clear();
-//
-//        vEcriture.getListLigneEcriture().add(this.createLigne(1, "130", null));
-//        vEcriture.getListLigneEcriture().add(this.createLigne(1, "130", null));
-//        Assert.assertFalse(vEcriture.toString(), vEcriture.isACorrectEcritureComptable());
-//        vEcriture.getListLigneEcriture().clear();
-//
-//        vEcriture.getListLigneEcriture().add(this.createLigne(1, null, "130"));
-//        vEcriture.getListLigneEcriture().add(this.createLigne(1, null, "130"));
-//        Assert.assertFalse(vEcriture.toString(), vEcriture.isACorrectEcritureComptable());
-//    }
-
     @Test
     public void areMontantsSignes() throws Exception {
         EcritureComptable vEcriture = new EcritureComptable();
@@ -99,17 +81,13 @@ public class EcritureComptableTest {
     }
 
 //    @Test
-//    public void isACorrectReference() throws Exception {
+//    public void checkNumbersAfterComma() throws Exception {
 //        EcritureComptable vEcriture = new EcritureComptable();
-//
-//        JournalComptable vJournal = new JournalComptable("BQ", "Journal de la banque");
-//        SequenceEcritureComptable vSequence = new SequenceEcritureComptable(2016, 1);
-//        vEcriture.setReference(vJournal.getCode(), Integer.toString(vSequence.getAnnee()), String.format("%05d", vSequence.getDerniereValeur()));
-//        Assert.assertTrue(Pattern.compile("\\w{1,5}-\\d{4}/\\d{5}").matcher(vEcriture.getReference()).matches());
-//
-//        vJournal = new JournalComptable("BQ", "Journal de la banque");
-//        vSequence = new SequenceEcritureComptable(2016, 1485694);
-//        vEcriture.setReference(vJournal.getCode(), Integer.toString(vSequence.getAnnee()), String.format("%05d", vSequence.getDerniereValeur()));
-//        Assert.assertFalse(Pattern.compile("\\w{1,5}-\\d{4}/\\d{5}").matcher(vEcriture.getReference()).matches());
+//        try {
+//            vEcriture.getListLigneEcriture().add(this.createLigne(1, null, "130.245"));
+//            vEcriture.getListLigneEcriture().add(this.createLigne(1, "130.245", null));
+//        } catch (FunctionalException e) {
+//            assert(e.getMessage().contains("Le montant du crédit ne peut comporter que deux chiffres maximum après la virgule"));
+//        }
 //    }
 }

@@ -171,7 +171,7 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
     }
 
     @Test
-    public void addReference() throws ParseException, NotFoundException {
+    public void addReference() throws ParseException, NotFoundException, FunctionalException {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("BQ", "Journal de la banque"));
         Date date = new SimpleDateFormat("dd/M/yyyy").parse("31/12/2016");
@@ -231,7 +231,6 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
         try {
             manager.checkEcritureComptableContext(pEcritureComptable);
         } catch (FunctionalException e) {
-            // pEcritureComptable.getId() == null
             assert(e.getMessage().contains("Une autre écriture comptable existe déjà avec la même référence."));
         }
 
@@ -241,13 +240,12 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
         try {
             manager.checkEcritureComptableContext(pEcritureComptable);
         } catch (FunctionalException e) {
-            // !pEcritureComptable.getId().equals(vECRef.getId())
             assert(e.getMessage().contains("Une autre écriture comptable existe déjà avec la même référence."));
         }
     }
 
     @Test
-    public void checkEcritureComptable() throws ParseException, NotFoundException, FunctionalException {
+    public void checkEcritureComptable() throws ParseException, FunctionalException, NotFoundException {
         this.checkEcritureComptableUnit();
         this.checkEcritureComptableContext();
     }

@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.dummy.myerp.model.validation.constraint.MontantComptable;
+import com.dummy.myerp.technical.exception.FunctionalException;
 
 
 /**
@@ -46,10 +47,33 @@ public class LigneEcritureComptable {
      * @param pCredit the credit
      */
     public LigneEcritureComptable(CompteComptable pCompteComptable, String pLibelle,
-                                  BigDecimal pDebit, BigDecimal pCredit) {
+                                  BigDecimal pDebit, BigDecimal pCredit) throws FunctionalException {
         compteComptable = pCompteComptable;
         libelle = pLibelle;
         debit = pDebit;
+//        if (pDebit != null) {
+//            String splitCommaDebit = String.valueOf(pDebit);
+//            if (splitCommaDebit.contains(".")) {
+//                String partsNumberDebit = splitCommaDebit.substring(splitCommaDebit.indexOf("."));
+//                if (partsNumberDebit.length() <= 3) {
+//                    debit = pDebit;
+//                } else {
+//                    throw new FunctionalException("Le montant du débit ne peut comporter que deux chiffres maximum après la virgule");
+//                }
+//            }
+//        }
+
+//        if (pCredit != null) {
+//            String splitCommaCredit = String.valueOf(pCredit);
+//            if (splitCommaCredit.contains(".")) {
+//                String partsNumberCredit = splitCommaCredit.substring(splitCommaCredit.indexOf("."));
+//                if (partsNumberCredit.length() <= 3) {
+//                    credit = pCredit;
+//                } else {
+//                    throw new FunctionalException("Le montant du crédit ne peut comporter que deux chiffres maximum après la virgule");
+//                }
+//            }
+//        }
         credit = pCredit;
     }
 
