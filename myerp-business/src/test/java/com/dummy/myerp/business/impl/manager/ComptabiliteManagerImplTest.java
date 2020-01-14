@@ -40,12 +40,6 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
 
     @Test
     public void checkEcritureComptableUnit() throws FunctionalException, ParseException, NotFoundException {
-        this.checkEcritureComptableUnitViolation();
-        this.checkEcritureComptableUnitRG2_NotEquilibree();
-        this.checkEcritureComptableUnitRG2_Equilibree();
-        this.checkEcritureComptableUnitRG3_Violated();
-        this.checkEcritureComptableUnitRG3_Respected();
-
         // Wrong and good patterns of reference
         EcritureComptable vEcritureComptable;
         vEcritureComptable = new EcritureComptable();
@@ -58,7 +52,7 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
         vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                                                                                  null, new BigDecimal(123),
                                                                                  null));
-        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(2),
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
                                                                                  null, null,
                                                                                  new BigDecimal(123)));
 
@@ -171,7 +165,7 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
     }
 
     @Test
-    public void addReference() throws ParseException, NotFoundException, FunctionalException {
+    public void testAddReferenceCodeNotRegisteredRG5() throws ParseException, NotFoundException, FunctionalException {
         EcritureComptable pEcritureComptable = new EcritureComptable();
         pEcritureComptable.setJournal(new JournalComptable("BQ", "Journal de la banque"));
         Date date = new SimpleDateFormat("dd/M/yyyy").parse("31/12/2016");
@@ -192,16 +186,50 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
         } catch (FunctionalException e) {
             assert(e.getMessage().contains("Le code du journal n'est pas enregistré en base de données"));
         }
+    }
+
+    @Test
+    public void testAddReferenceMaxNumberRG5() throws ParseException, NotFoundException, FunctionalException {
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("BQ", "Journal de la banque"));
+        Date date = new SimpleDateFormat("dd/M/yyyy").parse("31/12/2016");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        pEcritureComptable.setDate(calendar.getTime());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(200),
+                null));
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, null,
+                new BigDecimal(200)));
 
         Mockito.when(getDaoProxy().getComptabiliteDao().isJournalInDatabase(pEcritureComptable.getJournal())).thenReturn(true);
-
         Mockito.when(getDaoProxy().getComptabiliteDao().getSequence(calendar.get(Calendar.YEAR), pEcritureComptable.getJournal().getCode()).getDerniereValeur()).thenReturn(99999);
         try {
             manager.addReference(pEcritureComptable);
         } catch (FunctionalException e) {
             assert(e.getMessage().contains("Le nombre maximal d'écriture pour ce journal a été atteint"));
         }
+    }
 
+    @Test
+    public void testAddReferenceSuccessRG5() throws FunctionalException, ParseException, NotFoundException {
+        EcritureComptable pEcritureComptable = new EcritureComptable();
+        pEcritureComptable.setJournal(new JournalComptable("BQ", "Journal de la banque"));
+        Date date = new SimpleDateFormat("dd/M/yyyy").parse("31/12/2016");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        pEcritureComptable.setDate(calendar.getTime());
+        pEcritureComptable.setLibelle("Libelle");
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(200),
+                null));
+        pEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, null,
+                new BigDecimal(200)));
+
+        Mockito.when(getDaoProxy().getComptabiliteDao().isJournalInDatabase(pEcritureComptable.getJournal())).thenReturn(true);
         Mockito.when(getDaoProxy().getComptabiliteDao().getSequence(calendar.get(Calendar.YEAR), pEcritureComptable.getJournal().getCode()).getDerniereValeur()).thenReturn(146);
         try {
             manager.addReference(pEcritureComptable);
@@ -233,20 +261,5 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
         } catch (FunctionalException e) {
             assert(e.getMessage().contains("Une autre écriture comptable existe déjà avec la même référence."));
         }
-
-        Mockito.when(getDaoProxy().getComptabiliteDao().getEcritureComptableByRef(
-                pEcritureComptable.getReference()).getId()).thenReturn(-1);
-        pEcritureComptable.setId(-6);
-        try {
-            manager.checkEcritureComptableContext(pEcritureComptable);
-        } catch (FunctionalException e) {
-            assert(e.getMessage().contains("Une autre écriture comptable existe déjà avec la même référence."));
-        }
-    }
-
-    @Test
-    public void checkEcritureComptable() throws ParseException, FunctionalException, NotFoundException {
-        this.checkEcritureComptableUnit();
-        this.checkEcritureComptableContext();
     }
 }

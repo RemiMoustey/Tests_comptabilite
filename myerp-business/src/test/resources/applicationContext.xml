@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="txManagerP9" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceMYERP"/>
+    </bean>
+
+    <bean id="dataSourceMYERP"
+          class="org.apache.commons.dbcp2.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.postgresql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:postgresql://192.168.99.100:9032/db_myerp"></property>
+        <property name="username" value="usr_myerp"></property>
+        <property name="password" value="myerp"></property>
+        <property name="initialSize" value="2"></property>
+    </bean>
+
+    <!-- ====================   Business-Proxy   ==================== -->
+
+    <!-- BusinessProxy -->
+    <bean id="BusinessProxy"
+          class="com.dummy.myerp.business.impl.BusinessProxyImpl"
+          scope="singleton"
+          factory-method="getInstance">
+        <constructor-arg ref="DaoProxy"/>
+        <constructor-arg ref="transactionManager"/>
+    </bean>
+
+
+    <!-- ========== Transaction Managers ========== -->
+    <import resource="transactionContext.xml"/>
+</beans>
