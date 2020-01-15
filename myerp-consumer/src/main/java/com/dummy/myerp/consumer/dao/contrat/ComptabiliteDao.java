@@ -2,10 +2,7 @@ package com.dummy.myerp.consumer.dao.contrat;
 
 import java.util.List;
 
-import com.dummy.myerp.model.bean.comptabilite.CompteComptable;
-import com.dummy.myerp.model.bean.comptabilite.EcritureComptable;
-import com.dummy.myerp.model.bean.comptabilite.JournalComptable;
-import com.dummy.myerp.model.bean.comptabilite.SequenceEcritureComptable;
+import com.dummy.myerp.model.bean.comptabilite.*;
 import com.dummy.myerp.technical.exception.NotFoundException;
 
 
@@ -26,6 +23,12 @@ public interface ComptabiliteDao {
      * @return {@link List}
      */
     List<JournalComptable> getListJournalComptable();
+
+    /**
+     * Renvoie la liste des lignes d'écriture comptable
+     * @return {@link List}
+     */
+    List<LigneEcritureComptable> getListLigneEcritureComptable();
 
 
     // ==================== EcritureComptable ====================
@@ -53,6 +56,16 @@ public interface ComptabiliteDao {
      * @throws NotFoundException : Si l'écriture comptable n'est pas trouvée
      */
     EcritureComptable getEcritureComptableByRef(String pReference) throws NotFoundException;
+
+    /**
+     * Renvoie la ligne d'Écriture Comptable ayant pour ecriture_id {@code pEcritureId} et pour ligne_id {@code pLigneId}.
+     *
+     * @param pEcritureId l'id de l'écriture comptable
+     * @param pLigneId l'id de la ligne d'écriture
+     * @return {@link LigneEcritureComptable}
+     * @throws NotFoundException : Si la ligne d'écriture comptable n'est pas trouvée
+     */
+    LigneEcritureComptable getLigneEcritureComptableByEcritureIdAndLigneId(int pEcritureId, int pLigneId) throws NotFoundException;
 
     /**
      * Charge la liste des lignes d'écriture de l'écriture comptable {@code pEcritureComptable}

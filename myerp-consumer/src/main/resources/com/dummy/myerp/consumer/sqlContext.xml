@@ -25,6 +25,11 @@
                 SELECT * FROM myerp.ecriture_comptable
             </value>
         </property>
+        <property name="SQLgetListLigneEcritureComptable">
+            <value>
+                SELECT * FROM myerp.ligne_ecriture_comptable
+            </value>
+        </property>
         <property name="SQLgetEcritureComptable">
             <value>
                 SELECT * FROM myerp.ecriture_comptable
@@ -35,6 +40,13 @@
             <value>
                 SELECT * FROM myerp.ecriture_comptable
                 WHERE reference = :reference
+            </value>
+        </property>
+        <property name="SQLgetLigneEcritureComptableByEcritureIdAndLigneId">
+            <value>
+                SELECT * FROM myerp.ligne_ecriture_comptable
+                WHERE ecriture_id = :ecriture_id
+                AND ligne_id = :ligne_id
             </value>
         </property>
         <property name="SQLloadListLigneEcriture">

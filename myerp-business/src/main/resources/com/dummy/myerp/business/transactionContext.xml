@@ -14,7 +14,6 @@
         <constructor-arg ref="txManagerMYERP"/>
     </bean>
 
-
     <!-- PlatformTransactionManager pour le DataSource MYERP -->
     <bean id="txManagerMYERP" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSourceMYERP"/>

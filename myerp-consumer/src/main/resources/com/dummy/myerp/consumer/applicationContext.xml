@@ -7,7 +7,7 @@
 
     <!-- ====================   Consumer   ==================== -->
     <!-- AbstractDbConsumer -->
-    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" init-method="afterPropertiesSet">
         <property name="targetClass" value="com.dummy.myerp.consumer.db.AbstractDbConsumer"/>
         <property name="targetMethod" value="configure"/>
         <property name="arguments">
@@ -25,7 +25,7 @@
     <!-- ==================== Consumer-Proxy ==================== -->
 
     <!-- ConsumerHelper -->
-    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" init-method="afterPropertiesSet">
         <property name="targetClass" value="com.dummy.myerp.consumer.ConsumerHelper"/>
         <property name="targetMethod" value="configure"/>
         <property name="arguments">
@@ -49,7 +49,6 @@
         <property name="username" value="usr_myerp"/>
         <property name="password" value="myerp"/>
     </bean>
-
 
     <!-- ========== SQL ========== -->
     <import resource="sqlContext.xml"/>

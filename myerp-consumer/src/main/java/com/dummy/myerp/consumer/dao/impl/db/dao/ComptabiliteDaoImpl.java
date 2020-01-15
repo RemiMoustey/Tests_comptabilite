@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import javax.sql.DataSource;
 import java.sql.Types;
 import java.util.List;
 
@@ -73,6 +74,19 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
         return vList;
     }
 
+    /** SQLgetListLigneEcritureComptable */
+    private static String SQLgetListLigneEcritureComptable;
+    public void setSQLgetListLigneEcritureComptable(String pSQLgetListLigneEcritureComptable) {
+        SQLgetListLigneEcritureComptable = pSQLgetListLigneEcritureComptable;
+    }
+    @Override
+    public List<LigneEcritureComptable> getListLigneEcritureComptable() {
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(this.getDataSource(DataSourcesEnum.MYERP));
+        LigneEcritureComptableRM vRM = new LigneEcritureComptableRM();
+        List<LigneEcritureComptable> vList = vJdbcTemplate.query(SQLgetListLigneEcritureComptable, vRM);
+        return vList;
+    }
+
     // ==================== EcritureComptable - GET ====================
 
     /** SQLgetListEcritureComptable */
@@ -126,6 +140,27 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
             vBean = vJdbcTemplate.queryForObject(SQLgetEcritureComptableByRef, vSqlParams, vRM);
         } catch (EmptyResultDataAccessException vEx) {
             throw new NotFoundException("EcritureComptable non trouvée : reference=" + pReference);
+        }
+        return vBean;
+    }
+
+    /** SQLgetEcritureComptableByRef */
+    private static String SQLgetLigneEcritureComptableByEcritureIdAndLigneId;
+    public void setSQLgetLigneEcritureComptableByEcritureIdAndLigneId(String pSQLgetLigneEcritureComptableByEcritureIdAndLigneId) {
+        SQLgetLigneEcritureComptableByEcritureIdAndLigneId = pSQLgetLigneEcritureComptableByEcritureIdAndLigneId;
+    }
+    @Override
+    public LigneEcritureComptable getLigneEcritureComptableByEcritureIdAndLigneId(int pEcritureId, int pLigneId) throws NotFoundException {
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(getDataSource(DataSourcesEnum.MYERP));
+        MapSqlParameterSource vSqlParams = new MapSqlParameterSource();
+        vSqlParams.addValue("ecriture_id", pEcritureId);
+        vSqlParams.addValue("ligne_id", pLigneId);
+        LigneEcritureComptableRM vRM = new LigneEcritureComptableRM();
+        LigneEcritureComptable vBean;
+        try {
+            vBean = vJdbcTemplate.queryForObject(SQLgetLigneEcritureComptableByEcritureIdAndLigneId, vSqlParams, vRM);
+        } catch (EmptyResultDataAccessException vEx) {
+            throw new NotFoundException("LigneEcritureComptable non trouvée : ecriture_id=" + pEcritureId + ", ligne_id=" + pLigneId);
         }
         return vBean;
     }
@@ -203,7 +238,6 @@ public class ComptabiliteDaoImpl extends AbstractDbConsumer implements Comptabil
             vJdbcTemplate.update(SQLinsertListLigneEcritureComptable, vSqlParams);
         }
     }
-
 
     // ==================== EcritureComptable - UPDATE ====================
 
