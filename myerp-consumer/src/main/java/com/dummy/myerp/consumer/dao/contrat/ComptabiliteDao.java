@@ -30,6 +30,12 @@ public interface ComptabiliteDao {
      */
     List<LigneEcritureComptable> getListLigneEcritureComptable();
 
+    /**
+     * Renvoie la liste des séquences d'écriture comptable
+     * @return {@link List}
+     */
+    List<SequenceEcritureComptable> getListSequenceEcritureComptable();
+
 
     // ==================== EcritureComptable ====================
 
