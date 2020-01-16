@@ -129,7 +129,43 @@ public class ComptabiliteManagerImplTest extends AbstractBusinessManager {
     }
 
     @Test
-    public void checkEcritureComptableUnitRG3_Violated() throws FunctionalException {
+    public void checkEcritureComptableUnitRG2_TwoDebits() throws FunctionalException {
+        thrown.expect(FunctionalException.class);
+        thrown.expectMessage("L'écriture comptable n'est pas équilibrée.");
+        EcritureComptable vEcritureComptable;
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(200),
+                null));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, new BigDecimal(200),
+                null));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test
+    public void checkEcritureComptableUnitRG2_TwoCredits() throws FunctionalException {
+        thrown.expect(FunctionalException.class);
+        thrown.expectMessage("L'écriture comptable n'est pas équilibrée.");
+        EcritureComptable vEcritureComptable;
+        vEcritureComptable = new EcritureComptable();
+        vEcritureComptable.setJournal(new JournalComptable("AC", "Achat"));
+        vEcritureComptable.setDate(new Date());
+        vEcritureComptable.setLibelle("Libelle");
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, null,
+                new BigDecimal(200)));
+        vEcritureComptable.getListLigneEcriture().add(new LigneEcritureComptable(new CompteComptable(1),
+                null, null,
+                new BigDecimal(200)));
+        manager.checkEcritureComptableUnit(vEcritureComptable);
+    }
+
+    @Test
+    public void checkEcritureComptableUnitRG3_NoDebitAndNoCredit() throws FunctionalException {
         thrown.expect(FunctionalException.class);
         thrown.expectMessage("L'écriture comptable doit avoir au moins deux lignes : une ligne au débit et une ligne au crédit.");
         EcritureComptable vEcritureComptable;
