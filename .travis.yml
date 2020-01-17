@@ -18,3 +18,8 @@ before_script:
 
 script:
   - mvn clean install -P test-business,test-consumer
+
+after_script:
+  - cat myerp-business/target/surefire-reports/*.txt
+  - cat myerp-consumer/target/surefire-reports/*.txt
+  - cat myerp-model/target/surefire-reports/*.txt
