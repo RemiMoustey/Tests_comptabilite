@@ -1,14 +1,17 @@
 
 language: java
 
-rvm:
-  - 12
+jdk:
+  - openjdk8
 
 services:
   - postgresql
 
 addons:
   - postgresql: '9.4'
+
+notifications:
+  email: false
 
 before_script:
   - psql -c "create database db_myerp;" -U postgres
@@ -23,3 +26,8 @@ after_script:
   - cat myerp-business/target/surefire-reports/*.txt
   - cat myerp-consumer/target/surefire-reports/*.txt
   - cat myerp-model/target/surefire-reports/*.txt
+  - psql db_myerp < drop.sql
+  - psql db_myerp < 01_create_schema.sql
+  - psql db_myerp < 02_create_tables.sql
+  - psql db_myerp < 21_insert_data_demo.sql
+  - mvn --file pom.xml cobertura:cobertura coveralls:report -P test-business,test-consumer

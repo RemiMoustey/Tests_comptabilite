@@ -43,11 +43,14 @@
 
 
     <!-- ==================== Databases ==================== -->
-    <bean id="dataSourceMYERP" class="org.apache.commons.dbcp2.BasicDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/db_myerp"/>
-        <property name="username" value="postgres"/>
-        <property name="password" value=""/>
+    <bean id="dataSourceMYERP"
+          class="org.apache.commons.dbcp2.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="org.postgresql.Driver"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/db_myerp"></property>
+        <property name="username" value="postgres"></property>
+        <property name="password" value=""></property>
+        <property name="initialSize" value="2"></property>
     </bean>
 
     <!-- ========== SQL ========== -->
