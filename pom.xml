@@ -257,6 +257,11 @@
     <!-- Dependencies -->
     <!-- =============================================================== -->
     <dependencies>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.2.3</version>
+        </dependency>
     </dependencies>
 
 
@@ -381,7 +386,7 @@
                     <artifactId>coveralls-maven-plugin</artifactId>
                     <version>4.3.0</version>
                     <configuration>
-                        <repoToken>BRSPM1Qp18rPdtxqgGMLCgwP4W4dXdPpv</repoToken>
+                        <repoToken>shHwYHI5GRdmWzLKRFy9LMIyMd96WXUcZ</repoToken>
                     </configuration>
                 </plugin>
                 <plugin>
