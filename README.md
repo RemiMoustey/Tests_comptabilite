@@ -1,1 +1,1 @@
-Écriture de tests unitaires et d'intégration d'un système de facturation
+Écriture de tests unitaires et d'intégration d'un système de facturation.
